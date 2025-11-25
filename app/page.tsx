@@ -12,8 +12,8 @@ export default function Page() {
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-blue-200 shadow-lg z-40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <img src="/elijah-alonzo.png" alt="Elijah Alonzo" className="h-10 w-auto" />
+          <div className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-900 bg-clip-text text-transparent">
+            Elijah Alonzo
           </div>
           <div className="hidden md:flex gap-6 items-center">
             <a href="#home" className="text-gray-600 hover:text-blue-600 transition font-medium">Home</a>
