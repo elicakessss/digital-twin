@@ -6,6 +6,43 @@ import Chat from "./components/chat";
 
 export default function Page() {
   const [showChat, setShowChat] = useState(false);
+  const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [formMessage, setFormMessage] = useState('');
+
+  async function handleContactSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setFormStatus('submitting');
+    
+    const formData = new FormData(e.currentTarget);
+    
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setFormStatus('success');
+        setFormMessage('Thank you! Your message has been sent successfully.');
+        (e.target as HTMLFormElement).reset();
+        setTimeout(() => {
+          setFormStatus('idle');
+          setFormMessage('');
+        }, 5000);
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      setFormStatus('error');
+      setFormMessage('Sorry, there was an error sending your message. Please try emailing me directly at elijahalonzo.me@gmail.com');
+      setTimeout(() => {
+        setFormStatus('idle');
+        setFormMessage('');
+      }, 5000);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-blue-100">
@@ -664,22 +701,33 @@ export default function Page() {
             {/* Right Column - Contact Form */}
             <div className="bg-gradient-to-br from-white to-blue-50 border border-blue-200 rounded-xl p-8 backdrop-blur-md shadow-lg">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">Send a Message</h3>
-              <form className="space-y-6">
+              <form onSubmit={handleContactSubmit} className="space-y-6">
+                {/* Hidden Web3Forms Access Key */}
+                <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY" />
+                <input type="hidden" name="subject" value="New Contact Form Submission from Portfolio" />
+                <input type="hidden" name="from_name" value="Portfolio Contact Form" />
+                
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
                     <input
                       type="text"
+                      name="name"
                       placeholder="Your name"
-                      className="w-full px-4 py-3 bg-white border border-blue-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
+                      required
+                      disabled={formStatus === 'submitting'}
+                      className="w-full px-4 py-3 bg-white border border-blue-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition disabled:opacity-50"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                     <input
                       type="email"
+                      name="email"
                       placeholder="your.email@example.com"
-                      className="w-full px-4 py-3 bg-white border border-blue-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
+                      required
+                      disabled={formStatus === 'submitting'}
+                      className="w-full px-4 py-3 bg-white border border-blue-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition disabled:opacity-50"
                     />
                   </div>
                 </div>
@@ -688,27 +736,55 @@ export default function Page() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
                   <input
                     type="text"
+                    name="subject_line"
                     placeholder="What's this about?"
-                    className="w-full px-4 py-3 bg-white border border-blue-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
+                    required
+                    disabled={formStatus === 'submitting'}
+                    className="w-full px-4 py-3 bg-white border border-blue-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition disabled:opacity-50"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
                   <textarea
+                    name="message"
                     placeholder="Tell me about your project or opportunity..."
                     rows={5}
-                    className="w-full px-4 py-3 bg-white border border-blue-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition resize-none"
+                    required
+                    disabled={formStatus === 'submitting'}
+                    className="w-full px-4 py-3 bg-white border border-blue-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition resize-none disabled:opacity-50"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-semibold rounded-lg transition transform hover:scale-105 flex items-center justify-center gap-2"
+                  disabled={formStatus === 'submitting'}
+                  className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-semibold rounded-lg transition transform hover:scale-105 flex items-center justify-center gap-2 disabled:opacity-50 disabled:transform-none disabled:cursor-not-allowed"
                 >
-                  <Mail size={18} />
-                  Send Message
+                  {formStatus === 'submitting' ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Mail size={18} />
+                      Send Message
+                    </>
+                  )}
                 </button>
+
+                {/* Status Messages */}
+                {formStatus === 'success' && (
+                  <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
+                    <span className="font-medium">✓ Success!</span> {formMessage}
+                  </div>
+                )}
+                {formStatus === 'error' && (
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                    <span className="font-medium">✗ Error:</span> {formMessage}
+                  </div>
+                )}
               </form>
             </div>
           </div>
