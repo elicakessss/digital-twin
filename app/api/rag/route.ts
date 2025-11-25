@@ -1,40 +1,48 @@
+
 import { NextRequest, NextResponse } from 'next/server';
 import { askProfessionalBackground } from '../../actions/rag';
+import Groq from 'groq-sdk';
 
-// Enhanced RAG handler with LLM preprocessing and postprocessing
+// This handler will process RAG queries for the MCP server
 export async function POST(req: NextRequest) {
   const { question } = await req.json();
-  
-  if (!question || typeof question !== 'string') {
-    return NextResponse.json(
-      { error: 'Invalid question parameter' },
-      { status: 400 }
-    );
-  }
-
   try {
-    // Use the enhanced RAG query which includes:
-    // 1. Query preprocessing with LLM
-    // 2. Vector search with enhanced query
-    // 3. Response postprocessing with LLM for interview-ready answers
     const result = await askProfessionalBackground(question);
+    const matches = Array.isArray(result) ? result : [];
 
-    if (!result.success) {
-      throw new Error('RAG query failed');
+    let context = '';
+    if (matches.length > 0) {
+      context = matches.map(
+        (m: any) => `${m.metadata?.title || ''}: ${m.metadata?.content || ''}`
+      ).join('\n\n');
+    } else {
+      context = 'No relevant information was found in the digital twin profile.';
     }
 
+    const prompt = `Answer only the following question about yourself, using first person. Be formal, warm,concise, and direct.\n\nYour Information:\n${context}\n\nQuestion: ${question}`;
+
+    const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+    const completion = await groq.chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are an AI digital twin. Answer questions as if you are the person, using first person. Be concise and answer only what is asked, without extra information.'
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 500
+    });
+    const llmAnswer = completion.choices?.[0]?.message?.content?.trim() || 'No answer generated.';
+
     return NextResponse.json({
-      answer: result.response,
-      metadata: result.metadata, // Include timing and query info for debugging
+      answer: llmAnswer
     });
   } catch (err: any) {
-    console.error('RAG API Error:', err);
-    return NextResponse.json(
-      { 
-        error: err?.message || 'Error processing request.',
-        answer: 'I apologize, but I encountered an error processing your question. Please try again.'
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: err?.message || JSON.stringify(err) || 'Error processing request.' }, { status: 500 });
   }
 }

@@ -1,44 +1,21 @@
 // MCP RAG Server Action
 'use server';
 
-import {
-  enhancedRAGQuery,
-  basicRAGQuery,
-  compareRAGApproaches,
-  contextAwareRAG,
-  type InterviewContext,
-} from '@/lib/llm-enhanced-rag';
+import { Index } from '@upstash/vector';
 
-/**
- * Enhanced RAG query with LLM preprocessing and postprocessing
- */
 export async function askProfessionalBackground(question: string) {
-  try {
-    return await enhancedRAGQuery(question);
-  } catch (error) {
-    console.error('Enhanced RAG failed, falling back to basic RAG:', error);
-    return await basicRAGQuery(question);
-  }
-}
+  const index = new Index({
+    url: process.env.UPSTASH_VECTOR_REST_URL!,
+    token: process.env.UPSTASH_VECTOR_REST_TOKEN!,
+  });
 
-/**
- * Basic RAG query without LLM enhancement (fallback)
- */
-export async function askProfessionalBackgroundBasic(question: string) {
-  return await basicRAGQuery(question);
-}
+  // Query Upstash Vector (RAG)
+  const result = await index.query({
+    data: question,
+    topK: 3,
+    includeMetadata: true,
+  });
 
-/**
- * Compare basic vs enhanced RAG approaches
- */
-export async function compareRAG(question: string) {
-  return await compareRAGApproaches(question);
+  // TODO: Add logic to generate answer using Groq/LLaMA if needed
+  return result;
 }
-
-/**
- * Context-aware RAG for specific interview types
- */
-export async function askWithContext(question: string, context: InterviewContext) {
-  return await contextAwareRAG(question, context);
-}
-
