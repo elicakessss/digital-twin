@@ -19,7 +19,7 @@
 
 1. Click **"Add New..."** → **"Project"**
 2. Select **"Import Git Repository"**
-3. Find and select: `elicakessss/digital-twin`
+3. Find and select: `elijah-alonzo/digital-twin`
 4. Click **"Import"**
 
 ### Step 3: Configure Project Settings
@@ -155,7 +155,7 @@ Your Digital Twin MCP Server is now live and accessible 24/7 for interview prepa
 
 ## 📊 Your GitHub Repository
 
-**Repository**: https://github.com/elicakessss/digital-twin
+**Repository**: https://github.com/elijah-alonzo/digital-twin
 
 ## 🔧 Troubleshooting
 

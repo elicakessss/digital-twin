@@ -120,7 +120,7 @@ export default function Page() {
               {/* Social Links */}
               <div className="flex gap-4 pt-4">
                 <a
-                  href="https://github.com/elicakessss"
+                  href="https://github.com/elijah-alonzo"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 bg-white hover:bg-blue-50 border border-gray-200 hover:border-blue-300 rounded-lg text-gray-600 hover:text-blue-600 shadow-sm hover:shadow-md transition"
@@ -540,7 +540,7 @@ export default function Page() {
                   ))}
                 </div>
                 <a
-                  href="https://github.com/elicakessss/digital-twin.git"
+                  href="https://github.com/elijah-alonzo/digital-twin.git"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-cyan-600 hover:text-cyan-700 text-sm"
@@ -568,7 +568,7 @@ export default function Page() {
                   ))}
                 </div>
                 <a
-                  href="https://github.com/elicakessss/EqualLearn.git"
+                  href="https://github.com/elijah-alonzo/EqualLearn.git"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 text-sm"
@@ -596,7 +596,7 @@ export default function Page() {
                   ))}
                 </div>
                 <a
-                  href="https://github.com/elicakessss/app.git"
+                  href="https://github.com/elijah-alonzo/app.git"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm"
@@ -624,7 +624,7 @@ export default function Page() {
                   ))}
                 </div>
                 <a
-                  href="https://github.com/elicakessss/GemCathcer.git"
+                  href="https://github.com/elijah-alonzo/GemCathcer.git"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 text-sm"
@@ -682,8 +682,8 @@ export default function Page() {
                     <Github className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1">GitHub</h3>
-                      <a href="https://github.com/elicakessss" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600 transition flex items-center gap-2">
-                        github.com/elicakessss <ExternalLink size={14} />
+                      <a href="https://github.com/elijah-alonzo" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600 transition flex items-center gap-2">
+                        github.com/elijah-alonzo <ExternalLink size={14} />
                       </a>
                     </div>
                   </div>

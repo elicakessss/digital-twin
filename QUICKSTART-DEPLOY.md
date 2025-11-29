@@ -7,7 +7,7 @@ Your Digital Twin MCP Server is ready for deployment to Vercel. Everything has b
 ## ✅ Pre-Deployment Status
 
 - ✅ **Build Test**: Passed - Project compiles successfully
-- ✅ **Git Repository**: Connected to https://github.com/elicakessss/digital-twin
+- ✅ **Git Repository**: Connected to https://github.com/elijah-alonzo/digital-twin
 - ✅ **Environment Variables**: Documented and ready
 - ✅ **Configuration Files**: Created (vercel.json, .vscode/mcp.json, claude_desktop_config.json)
 
@@ -20,7 +20,7 @@ Your Digital Twin MCP Server is ready for deployment to Vercel. Everything has b
 
 ### Step 2: Import Your Repository (1 min)
 1. Click **"Add New..."** → **"Project"**
-2. Find: **"elicakessss/digital-twin"**
+2. Find: **"elijah-alonzo/digital-twin"**
 3. Click **"Import"**
 
 ### Step 3: Add Environment Variables (2 min)
@@ -146,4 +146,4 @@ Once deployed, your Digital Twin MCP Server will be:
 
 ---
 
-**Your Repository**: https://github.com/elicakessss/digital-twin
+**Your Repository**: https://github.com/elijah-alonzo/digital-twin
